@@ -1,0 +1,116 @@
+<app-auth-content>
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-users"></i>
+                <span *ngIf="!memId"> เพิ่มสมาชิกใหม่</span>
+                <span *ngIf="memId"> แก้ไขสมาชิก</span>
+            </h1>
+            <p>หน้าสำหรับเพิ่มหรือแก้ไขสมาชิก</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home fa-lg"></i>
+            </li>
+            <li class="breadcrumb-item">
+                รายการสมาชิก
+            </li>
+            <li class="breadcrumb-item">
+                <a *ngIf="!memId">เพิ่มสมาชิกใหม่</a>
+                <a *ngIf="memId">แก้ไขสมาชิก</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <!-- ส่วนหัว -->
+                <div class="tile-title-w-btn">
+                    <h3 class="title">
+                        <span *ngIf="!memId">
+                            <i class="fa fa-user-plus"></i> เพิ่มสมาชิกใหม่
+                        </span>
+                        <span *ngIf="memId">
+                            <i class="fa fa-edit"></i> แก้ไขสมาชิก
+                        </span>
+                    </h3>
+                </div>
+
+                <!-- ส่วนฟอร์ม -->
+                <div class="tile-body">
+                    <form [formGroup]="form" (submit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <img *ngIf="!form.value.image" src="assets/images/no-image-profile.png" class="img-fluid img-thumbnail">
+                                    <img *ngIf="form.value.image" [src]="form.value.image" class="img-fluid img-thumbnail">
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" (change)="onConvertImage(inputFile)" #inputFile>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="">อีเมล์</label>
+                                    <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล" formControlName="email">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">รหัสผ่าน</label>
+                                    <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล" formControlName="password">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">ชื่อ</label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล" formControlName="firstname">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">นามสกุล</label>
+                                            <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล" formControlName="lastname">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">ตำแหน่ง</label>
+                                            <select class="form-control" formControlName="position">
+                                                <option value="">เลือกตำแหน่งงาน</option>
+                                                <option *ngFor="let item of positionItems" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">สิทธิ์ผู้ใช้งาน</label>
+                                            <select class="form-control" formControlName="role">
+                                                <option value="">เลือกสิทธิ์ผู้ใช้งาน</option>
+                                                <option *ngFor="let item of roleItems" [value]="item">
+                                                    {{ getRoleName(item) }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i> บันทึกข้อมูลสมาชิก
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-auth-content>

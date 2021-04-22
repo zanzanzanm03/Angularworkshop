@@ -1,0 +1,106 @@
+<app-auth-content>
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-users"></i> รายการสมาชิก</h1>
+            <p>หน้าแสดงรายการ สมาชิก ค้นหา และแก้ไข</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home fa-lg"></i>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">รายการสมาชิก</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <!-- ส่วนหัว -->
+                <div class="tile-title-w-btn">
+                    <h3 class="title">
+                        <i class="fa fa-list"></i> รายการข้อมูลสมาชิก
+                    </h3>
+                    <!-- ค้นหา -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend" dropdown>
+                                <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+                                    {{ serachType.value }}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                                    <li *ngFor="let item of searchTypeItems" role="menuitem">
+                                        <a class="dropdown-item" (click)="serachType = item">
+                                            {{ item.value }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div [ngSwitch]="serachType.key">
+                                <input *ngSwitchCase="'updated'" bsDaterangepicker placement="left" type="text" [(ngModel)]="searchText" class="form-control"
+                                    placeholder="ค้นหาข้อมูล">
+                                <input *ngSwitchDefault type="text" [(ngModel)]="searchText" class="form-control" placeholder="ค้นหาข้อมูล">
+                            </div>
+
+                            <div class="input-group-append">
+                                <button (click)="onSearchItem()" class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile-body" *ngIf="items">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <!-- Head -->
+                            <thead>
+                                <tr>
+                                    <th>อีเมล์</th>
+                                    <th>ชื่อ</th>
+                                    <th>นามสกุล</th>
+                                    <th>ตำแหน่ง</th>
+                                    <th>สิทธิ์ผู้ใช้</th>
+                                    <th>วันที่</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <!-- Body -->
+                            <tbody>
+                                <tr *ngFor="let item of items.items">
+                                    <td>{{ item.email }}</td>
+                                    <td>{{ item.firstname }}</td>
+                                    <td>{{ item.lastname }}</td>
+                                    <td>{{ item.position }}</td>
+                                    <td>{{ getRoleName(item.role) }}</td>
+                                    <td>{{ item.updated | date : 'dd-MM-yyyy' }}</td>
+                                    <td class="text-right">
+                                        <ng-template [ngIf]="UserLogin.role == Role.Admin">
+                                            <i (click)="onUpdateMember(item)" class="fa fa-edit cur"></i>
+                                            <span> | </span>
+                                        </ng-template>
+                                        <i (click)="onDeleteMember(item)" class="fa fa-trash cur"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- Foot -->
+                            <tfoot>
+                                <tr>
+                                    <th colspan="7">
+                                        จำนวนสมาชิกทั้งหมด {{ items.totalItems }} คน
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <pagination [(ngModel)]="startPage" [itemsPerPage]="limitPage" (pageChanged)="onPageChanged($event)" [rotate]="false" [maxSize]="10"
+                            previousText="หน้าก่อนหน้า" nextText="หน้าถัดไป" [totalItems]="items.totalItems"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-auth-content>
